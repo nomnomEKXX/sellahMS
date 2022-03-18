@@ -4,7 +4,7 @@ from firebase_admin import firestore
 
 from flask import Flask, request, jsonify
 
-cred = credentials.Certificate("./serviceAccountKey.json")
+cred = credentials.Certificate("../serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -86,6 +86,8 @@ def updateSeller(userEmail):
             return jsonify({"code": 404, "message": "Error occured when adding store"})
             
         return jsonify({"code": 201, "message": "Successfully Updated Information"})
+
+@app.route('/sellers/')
 
 
 if __name__ == "__main__":
