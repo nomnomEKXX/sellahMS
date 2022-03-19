@@ -9,8 +9,12 @@ APIKEY = "AIzaSyCd5JgqK3vcSWsx29XrLb7e4BnMjI2rtBw"
 
 app = Flask(__name__)
 
-@app.route("/stores/getDistance")
+@app.route("/stores/getDistance/<storeEmail>")
 def getDistance():
+    #{
+    #   "userLocation": Take from browser, 
+    #   "storeLocation": Take from frontend
+    # }
     locations = request.get_json()
     userLocation = locations["userLocation"]
     storeAddress = locations["address"]

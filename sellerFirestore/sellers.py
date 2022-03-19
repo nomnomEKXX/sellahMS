@@ -87,8 +87,6 @@ def updateSeller(userEmail):
             
         return jsonify({"code": 201, "message": "Successfully Updated Information"})
 
-@app.route('/sellers/')
-
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
