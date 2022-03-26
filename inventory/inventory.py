@@ -123,19 +123,18 @@ def updateInventory(userEmail):
 # DELETE FOOD
 @app.route("/inventory/delete/<userEmail>", methods=["DELETE"])
 def deleteInventory(userEmail):
-    # target = request.get_json(())
+    # target = {
+    #     "gyoza": {
+    #         "item_quantity": 6,
+    #         "food_desc": "Yummy Gyoza",
+    #         "food_name": "Fried Gyozas",
+    #         "image": "https://images.unsplash.com/photo-1609183590563-7710ba1f90a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+    #         "old_price": "$6.00",
+    #         "current_price": "$3.00",
+    #     }
+    # }
 
-    target = {
-        "gyoza": {
-            "item_quantity": 6,
-            "food_desc": "Yummy Gyoza",
-            "food_name": "Fried Gyozas",
-            "image": "https://images.unsplash.com/photo-1609183590563-7710ba1f90a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-            "old_price": "$6.00",
-            "current_price": "$3.00",
-        }
-    }
-
+    target = request.get_json(())
     userInventory = db.collection("inventory").document(userEmail).get().to_dict()
     dbSnap = db.collection("inventory").document(userEmail)
     targetItem = list(target.keys())[0]
