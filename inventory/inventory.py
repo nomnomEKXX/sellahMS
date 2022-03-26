@@ -49,33 +49,33 @@ def addInventory(userEmail):
 # UPDATE / ADD EXISTING INVENTORY
 @app.route("/inventory/update/<userEmail>", methods=["POST", "GET"])
 def updateInventory(userEmail):
-    # newFoods = request.get_json()
-    newFoods = {
-        "gyoza": {
-            "item_quantity": 6,
-            "food_desc": "Yummy Gyoza",
-            "food_name": "Fried Gyozas",
-            "image": "https://images.unsplash.com/photo-1609183590563-7710ba1f90a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-            "old_price": "$6.00",
-            "current_price": "$3.00",
-        },
-        "dog": {
-            "item_quantity": 10,
-            "food_desc": "Delicious Dog",
-            "food_name": "Fried dog",
-            "image": "https://images.unsplash.com/photo-1618173745201-8e3bf8978acc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80",
-            "old_price": "$10.00",
-            "current_price": "$5.00",
-        },
-        "cat": {
-            "item_quantity": 10,
-            "food_desc": "Delicious cat",
-            "food_name": "Fried cat",
-            "image": "https://images.unsplash.com/photo-1618173745201-8e3bf8978acc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80",
-            "old_price": "$10.00",
-            "current_price": "$10.00",
-        },
-    }
+    newFoods = request.get_json()
+    # newFoods = {
+    #     "gyoza": {
+    #         "item_quantity": 6,
+    #         "food_desc": "Yummy Gyoza",
+    #         "food_name": "Fried Gyozas",
+    #         "image": "https://images.unsplash.com/photo-1609183590563-7710ba1f90a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+    #         "old_price": "$6.00",
+    #         "current_price": "$3.00",
+    #     },
+    #     "dog": {
+    #         "item_quantity": 10,
+    #         "food_desc": "Delicious Dog",
+    #         "food_name": "Fried dog",
+    #         "image": "https://images.unsplash.com/photo-1618173745201-8e3bf8978acc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80",
+    #         "old_price": "$10.00",
+    #         "current_price": "$5.00",
+    #     },
+    #     "cat": {
+    #         "item_quantity": 10,
+    #         "food_desc": "Delicious cat",
+    #         "food_name": "Fried cat",
+    #         "image": "https://images.unsplash.com/photo-1618173745201-8e3bf8978acc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80",
+    #         "old_price": "$10.00",
+    #         "current_price": "$10.00",
+    #     },
+    # }
 
     successUpdate = ""
     successAdd = ""
