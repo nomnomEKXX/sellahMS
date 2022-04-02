@@ -61,7 +61,7 @@ def addSeller():
 
 
 # UPDATE SELLER INFO
-@app.route("/sellers/update/<userEmail>", methods=["POST", "GET"])
+@app.route("/sellers/update/<userEmail>", methods=["POST", "GET", "PUT"])
 def updateSeller(userEmail):
     sellerRef = db.collection("sellers").document(userEmail)
     sellerInfo = request.get_json()
