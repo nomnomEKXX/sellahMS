@@ -34,7 +34,7 @@ def getSellers():
         result.append(seller)
     
     if len(result) == 0:
-        return {'code': 401, 'message': 'NO SELLERS IN DB'}
+        return {'code': 404, 'message': 'No sellers in Database'}
 
     return {"code": 200, "data": {"stores": result}}
 
@@ -43,18 +43,17 @@ def getSellers():
 def addSeller():
     sellerData = request.get_json()
     allSellers = db.collection('sellers').get()
-
     for seller in allSellers:
         seller = seller.to_dict()
         if seller['email'] == sellerData['email']:
-            return jsonify({'code': 404, 'message': 'Seller already exists'})
+            return jsonify({'code': 400, 'message': 'Store already exists'})
     
     try:
         db.collection('sellers').document(sellerData['email']).set(sellerData)
         print('Added Seller')
 
     except: 
-        return jsonify({"code": 404, "message": "Error occured when adding store"})
+        return jsonify({"code": 500, "message": "Error occured when adding store"})
 
     return jsonify({"code": 201, "message": "Successfully Added Seller"})
     
@@ -74,9 +73,9 @@ def updateSeller(userEmail):
             #DELETE OLD
             db.collection('sellers').document(userEmail).delete()
         except:
-            return jsonify({"code": 404, "message": "Error occured when adding store"})
+            return jsonify({"code": 500, "message": "Error occured when adding store"})
 
-        return jsonify({"code": 201, "message": "Successfully Updated Email Address and Information"})
+        return jsonify({"code": 200, "message": "Successfully Updated Email Address and Information"})
     
     #ANY OTHER CHANGE
     else:
@@ -84,9 +83,9 @@ def updateSeller(userEmail):
             sellerRef.update(sellerInfo)
 
         except:
-            return jsonify({"code": 404, "message": "Error occured when adding store"})
+            return jsonify({"code": 500, "message": "Error occured when adding store."})
             
-        return jsonify({"code": 201, "message": "Successfully Updated Information"})
+        return jsonify({"code": 200, "message": "Successfully Updated Information"})
 
 
 if __name__ == "__main__":
