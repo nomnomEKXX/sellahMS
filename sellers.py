@@ -3,6 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin 
 
 cred = credentials.Certificate(
     {
@@ -22,10 +23,12 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
+CORS(app)
 
 
 # GET ALL SELLERS
-@app.route('/sellers')
+@app.route('/getAllSellers')
+@cross_origin()
 def getSellers():
     result = []
     allSellers = db.collection('sellers').get()
@@ -39,39 +42,56 @@ def getSellers():
     return {"code": 200, "data": {"stores": result}}
 
 #ADD SELLER
-@app.route('/sellers/add/', methods=['POST', "GET"])
+@app.route('/addNewSeller', methods=['POST', "GET"])
+@cross_origin()
 def addSeller():
-    sellerData = request.get_json()
     allSellers = db.collection('sellers').get()
+    sellerData = request.get_json()
+
     for seller in allSellers:
         seller = seller.to_dict()
-        if seller['email'] == sellerData['email']:
-            return jsonify({'code': 400, 'message': 'Store already exists'})
+        if seller['uid'] == sellerData['sellerInfo']['uid']:
+            return jsonify(
+                {
+                    'code': 400, 
+                    'message': 'Store already exists'
+                }
+            )
     
     try:
-        db.collection('sellers').document(sellerData['email']).set(sellerData)
+        db.collection('sellers').document(sellerData['sellerInfo']['uid']).set(sellerData['sellerInfo'])
         print('Added Seller')
 
     except: 
         return jsonify({"code": 500, "message": "Error occured when adding store"})
 
     return jsonify({"code": 201, "message": "Successfully Added Seller"})
-    
+
+
+#GET SELLER INFO BY ID
+@app.route("/getSellerById/<string:sellerID>", methods=["GET","POST"]) 
+@cross_origin()
+def getSellerById(sellerID):
+    # sellerData = request.get_json()
+    sellerDetail = db.collection('sellers').document(sellerID).get()
+    return sellerDetail.to_dict()
+
 
 #UPDATE SELLER INFO
-@app.route('/sellers/update/<userEmail>', methods=['POST', 'GET', "PUT"])
-def updateSeller(userEmail):
-    sellerRef = db.collection('sellers').document(userEmail)
+@app.route('/updateSeller/<string:sellerID>', methods=['POST', 'GET', "PUT"])
+@cross_origin()
+def updateSeller(sellerID):
+    sellerRef = db.collection('sellers').document(sellerID)
     sellerInfo = request.get_json()
     
     #EMAIL CHANGE
-    if userEmail != sellerInfo['email']:
+    if sellerInfo['sellerInfo']['uid'] != sellerID:
         try:
             #CREATE NEW
-            db.collection('sellers').document(sellerInfo['email']).set(sellerInfo)
+            db.collection('sellers').document(sellerInfo['sellerInfo']['uid']).set(sellerInfo['sellerInfo'])
 
             #DELETE OLD
-            db.collection('sellers').document(userEmail).delete()
+            db.collection('sellers').document(sellerID).delete()
         except:
             return jsonify({"code": 500, "message": "Error occured when adding store"})
 
@@ -80,7 +100,7 @@ def updateSeller(userEmail):
     #ANY OTHER CHANGE
     else:
         try:
-            sellerRef.update(sellerInfo)
+            sellerRef.update(sellerInfo['sellerInfo'])
 
         except:
             return jsonify({"code": 500, "message": "Error occured when adding store."})
@@ -89,5 +109,5 @@ def updateSeller(userEmail):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5100, debug=True)
 
